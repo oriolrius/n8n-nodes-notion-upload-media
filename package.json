@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-notion-upload-media",
+  "name": "@oriolrius/n8n-nodes-notion-upload-media",
   "version": "1.0.3",
   "description": "n8n node for uploading media files to Notion blocks",
   "keywords": [
@@ -32,6 +32,9 @@
     "pnpm": ">=9.1"
   },
   "packageManager": "pnpm@10.12.3",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "main": "index.js",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
