@@ -40,9 +40,15 @@ jobs:
     
     - name: Build project
       run: pnpm build
-    
+
     - name: Check build output
       run: ls -la dist/
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/
 
   publish-on-release:
     if: github.event_name == 'release' && github.event.action == 'published'
@@ -67,13 +73,13 @@ jobs:
     
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
-    
+
     - name: Build project
       run: pnpm build
-    
+
     - name: Run tests (if any)
       run: pnpm test --if-present
-    
+
     - name: Publish to npm
       run: |
         npm config set //registry.npmjs.org/:_authToken $NODE_AUTH_TOKEN
@@ -104,12 +110,12 @@ jobs:
     
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
-    
-    - name: Build project
-      run: pnpm build
-    
-    - name: Run tests (if any)
-      run: pnpm test --if-present
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist/
     
     - name: Authenticate with GitHub Packages
       run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
