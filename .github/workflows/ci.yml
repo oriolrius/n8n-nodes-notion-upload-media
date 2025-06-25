@@ -40,7 +40,7 @@ jobs:
     
     - name: Build project
       run: pnpm build
-
+    
     - name: Check build output
       run: ls -la dist/
 
@@ -54,23 +54,23 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     needs: test
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
         version: 10.12.3
-    
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 20
         cache: 'pnpm'
         registry-url: 'https://registry.npmjs.org'
-    
+
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
@@ -108,15 +108,12 @@ jobs:
         cache: 'pnpm'
         registry-url: 'https://npm.pkg.github.com'
     
-    - name: Install dependencies
-      run: pnpm install --frozen-lockfile
-
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: dist
         path: dist/
-    
+
     - name: Authenticate with GitHub Packages
       run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
