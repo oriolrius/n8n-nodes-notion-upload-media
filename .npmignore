@@ -1,0 +1,41 @@
+# Source files - only publish dist
+nodes/
+credentials/
+examples/
+
+# Development files
+.env
+.env.local
+.env.*.local
+*.log
+.eslintcache
+
+# Build tools
+gulpfile.js
+n8n-config.js
+start-n8n.sh
+tsconfig.json
+.eslintrc.js
+.prettierrc.js
+
+# Development dependencies
+node_modules/
+.pnpm-store/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation that's not needed in package
+CONTRIBUTING.md
+SECURITY.md
