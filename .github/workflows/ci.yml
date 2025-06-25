@@ -47,6 +47,9 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     
     steps:
     - name: Checkout code
@@ -70,19 +73,24 @@ jobs:
     - name: Build project
       run: pnpm build
     
-    - name: Run tests (if any)
-      run: pnpm test --if-present
-    
     - name: Publish to npm
-      run: |
-        npm config set //registry.npmjs.org/:_authToken $NODE_AUTH_TOKEN
-        npm publish --access public
+      run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+    - name: Setup Node.js for GitHub Packages
+      if: success()
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        registry-url: 'https://npm.pkg.github.com'
+
     - name: Publish to GitHub Packages
+      if: success()
       run: |
-        npm config set //npm.pkg.github.com/:_authToken $NODE_AUTH_TOKEN
-        npm publish --access public --registry https://npm.pkg.github.com
+        # Create a scoped version for GitHub Packages
+        sed -i 's/"name": "n8n-nodes-notion-upload-media"/"name": "@oriolrius\/n8n-nodes-notion-upload-media"/' package.json
+        npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true

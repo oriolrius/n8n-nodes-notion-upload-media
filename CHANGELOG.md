@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2025-06-25
+
+### Fixed
+
+- Fixed CI/CD workflow npm publishing issues
+- Removed unnecessary main field from package.json for n8n community nodes
+- Added proper publishConfig for npm registry
+- Improved GitHub Packages publishing with proper permissions and scoped naming
+- Made GitHub Packages publishing optional to prevent CI failures
+
 ## [1.0.4] - 2025-06-25
 
 ### Fixed
