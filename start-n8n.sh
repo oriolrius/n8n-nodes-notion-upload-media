@@ -19,6 +19,12 @@ export N8N_PAYLOAD_SIZE_MAX=4294967296
 export N8N_DEFAULT_BINARY_DATA_MODE=filesystem
 export N8N_BINARY_DATA_STORAGE_PATH="$(pwd)/tmp"
 
+# Configure binary data cleanup
+export N8N_BINARY_DATA_TTL=60  # Delete binary data after 60 minutes
+export EXECUTIONS_DATA_PRUNE=true
+export EXECUTIONS_DATA_MAX_AGE=24  # Delete execution data after 24 hours
+export EXECUTIONS_DATA_PRUNE_TIMEOUT=3600  # Run cleanup every hour
+
 # Build the node first if dist doesn't exist
 if [ ! -d "dist" ]; then
     echo "Building the custom node..."
@@ -42,6 +48,9 @@ echo "Development workflow:"
 echo "1. Make changes to the node code"
 echo "2. Run 'pnpm build' to rebuild"
 echo "3. Restart n8n (Ctrl+C and run this script again)"
+echo ""
+echo "To manually clean up temporary files, run:"
+echo "  rm -rf $(pwd)/tmp/workflows/*/executions/*/binary_data/*"
 echo ""
 
 npx n8n start 2>&1 | tee n8n.log
