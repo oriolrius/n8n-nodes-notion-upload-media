@@ -60,8 +60,22 @@ jobs:
             echo "This release includes updates and improvements to the n8n Notion Upload Media node." >> release_notes.md
           fi
 
+      - name: Check if release exists
+        id: check_release
+        run: |
+          if gh release view ${{ steps.get_version.outputs.TAG }} > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Release already exists for tag ${{ steps.get_version.outputs.TAG }}"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "No release found for tag ${{ steps.get_version.outputs.TAG }}"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create GitHub Release
         id: create_release
+        if: steps.check_release.outputs.exists != 'true'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,6 +85,15 @@ jobs:
           body_path: release_notes.md
           draft: false
           prerelease: false
+
+      - name: Get existing release upload URL
+        id: get_release
+        if: steps.check_release.outputs.exists == 'true'
+        run: |
+          UPLOAD_URL=$(gh api repos/${{ github.repository }}/releases/tags/${{ steps.get_version.outputs.TAG }} --jq .upload_url)
+          echo "upload_url=$UPLOAD_URL" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create zip of dist folder
         run: |
@@ -83,7 +106,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.check_release.outputs.exists == 'true' && steps.get_release.outputs.upload_url || steps.create_release.outputs.upload_url }}
           asset_path: ./n8n-nodes-notion-upload-media-v${{ steps.get_version.outputs.VERSION }}-dist.zip
           asset_name: n8n-nodes-notion-upload-media-v${{ steps.get_version.outputs.VERSION }}-dist.zip
           asset_content_type: application/zip
