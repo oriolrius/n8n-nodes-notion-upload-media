@@ -10,6 +10,7 @@ import {
 import FormData from 'form-data';
 import { request } from 'https';
 import { URL } from 'url';
+import { version } from '../../package.json';
 
 export class NotionUploadMedia implements INodeType {
 	description: INodeTypeDescription = {
@@ -19,7 +20,7 @@ export class NotionUploadMedia implements INodeType {
 		group: ['transform'],
 		version: 2,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Upload media files to Notion blocks',
+		description: `Upload media files to Notion blocks (v${version})`,
 		defaults: {
 			name: 'Notion Upload Media',
 		},
@@ -147,6 +148,12 @@ export class NotionUploadMedia implements INodeType {
 					},
 				],
 			},
+			{
+				displayName: `Package Version: ${version}`,
+				name: 'version',
+				type: 'notice',
+				default: '',
+			},
 		],
 	};
 
@@ -176,7 +183,20 @@ export class NotionUploadMedia implements INodeType {
 
 					// Get binary data
 					const binaryData = this.helpers.assertBinaryData(i, binaryPropertyName);
-					const fileBuffer = Buffer.from(binaryData.data, 'base64');
+					
+					// Use n8n helper to get buffer - handles both memory and filesystem modes
+					const fileBuffer = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
+					
+					// Check if buffer is empty
+					if (!fileBuffer || fileBuffer.length === 0) {
+						throw new NodeOperationError(this.getNode(), 'Binary data is empty or could not be retrieved', {
+							itemIndex: i,
+						});
+					}
+					
+					// Log buffer size for debugging
+					console.log(`[NotionUploadMedia] Buffer size: ${fileBuffer.length} bytes`);
+					
 					const fileName = options.fileName || binaryData.fileName || 'media';
 					const mimeType = binaryData.mimeType || 'application/octet-stream';
 
@@ -318,7 +338,8 @@ async function uploadMediaToNotionBlock(
 		formData.append(key, value as string);
 	});
 	
-	// Add file last
+	// Add file last - ensure buffer is not corrupted
+	console.log(`[NotionUploadMedia] Uploading buffer of size: ${fileBuffer.length} bytes`);
 	formData.append('file', fileBuffer, {
 		filename: fileName,
 		contentType: mimeType,
@@ -448,11 +469,20 @@ async function uploadLargeFileToS3(signedUploadUrl: string, formData: FormData):
 			};
 
 			const req = request(options, (res) => {
-				if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
-					resolve();
-				} else {
-					reject(new Error(`Upload failed with status: ${res.statusCode}`));
-				}
+				let responseBody = '';
+				
+				res.on('data', (chunk) => {
+					responseBody += chunk;
+				});
+				
+				res.on('end', () => {
+					if (res.statusCode && res.statusCode >= 200 && res.statusCode < 300) {
+						resolve();
+					} else {
+						console.error(`[NotionUploadMedia] Upload failed with status: ${res.statusCode}, body: ${responseBody}`);
+						reject(new Error(`Upload failed with status: ${res.statusCode}`));
+					}
+				});
 			});
 
 			req.on('error', reject);

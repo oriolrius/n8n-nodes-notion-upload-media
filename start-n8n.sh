@@ -16,6 +16,8 @@ export N8N_HOST=localhost
 export N8N_RUNNERS_ENABLED=true
 export N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
 export N8N_PAYLOAD_SIZE_MAX=4294967296
+export N8N_DEFAULT_BINARY_DATA_MODE=filesystem
+export N8N_BINARY_DATA_STORAGE_PATH="$(pwd)/tmp"
 
 # Build the node first if dist doesn't exist
 if [ ! -d "dist" ]; then
