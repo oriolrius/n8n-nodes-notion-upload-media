@@ -4,7 +4,12 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 } from 'n8n-workflow';
-import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
+// Support both n8n v1.x (NodeConnectionType) and v2.x (NodeConnectionTypes)
+import * as n8nWorkflow from 'n8n-workflow';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const NodeConnectionTypes = ((n8nWorkflow as any).NodeConnectionTypes ||
+	(n8nWorkflow as any).NodeConnectionType) as { Main: 'main' };
 
 import FormData from 'form-data';
 import { request } from 'https';
