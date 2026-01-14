@@ -74,7 +74,7 @@
     "url": "git+https://github.com/oriolrius/n8n-nodes-notion-upload-media.git"
   },
   "scripts": {
-    "build": "tsc && gulp build:icons && rm -f dist/package.json",
+    "build": "node -e \"const p=require('./package.json'); require('fs').writeFileSync('nodes/version.ts', '// Auto-generated - do not edit manually\\nexport const VERSION = \\'' + p.version + '\\';\\n')\" && tsc && gulp build:icons && rm -f dist/package.json",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint \"nodes/**/*.ts\" \"credentials/**/*.ts\"",

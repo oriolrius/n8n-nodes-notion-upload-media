@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- **Build cleanup**: Added automatic removal of `dist/package.json` after build
-  - TypeScript copies package.json to dist due to `import { version }` statement
-  - The copied package.json had incorrect paths causing n8n node loading issues
-  - Build script now removes it automatically: `rm -f dist/package.json`
+- **Critical**: Fixed "Cannot find module '../../package.json'" error that prevented node loading
+  - Replaced `import { version } from '../../package.json'` with generated `nodes/version.ts`
+  - Build script now auto-generates version.ts from package.json before compilation
+  - Removed problematic `dist/package.json` after build (was causing path resolution issues)
+- n8n now correctly loads both NotionUploadMedia and NotionListMedia nodes
 
 ## [2.0.2] - 2025-01-14
 

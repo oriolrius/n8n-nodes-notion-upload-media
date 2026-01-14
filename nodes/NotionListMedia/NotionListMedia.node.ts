@@ -6,7 +6,7 @@ import type {
 } from 'n8n-workflow';
 import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 
-import { version } from '../../package.json';
+import { VERSION } from '../version';
 
 export class NotionListMedia implements INodeType {
 	description: INodeTypeDescription = {
@@ -16,7 +16,7 @@ export class NotionListMedia implements INodeType {
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: `List and retrieve media files from Notion blocks (v${version})`,
+		description: `List and retrieve media files from Notion blocks (v${VERSION})`,
 		defaults: {
 			name: 'Notion List Media',
 		},
@@ -177,7 +177,7 @@ export class NotionListMedia implements INodeType {
 				],
 			},
 			{
-				displayName: `Package Version: ${version}`,
+				displayName: `Package Version: ${VERSION}`,
 				name: 'version',
 				type: 'notice',
 				default: '',

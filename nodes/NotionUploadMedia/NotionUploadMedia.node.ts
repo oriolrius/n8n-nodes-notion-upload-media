@@ -9,7 +9,7 @@ import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 import FormData from 'form-data';
 import { request } from 'https';
 import { URL } from 'url';
-import { version } from '../../package.json';
+import { VERSION } from '../version';
 
 export class NotionUploadMedia implements INodeType {
 	description: INodeTypeDescription = {
@@ -19,7 +19,7 @@ export class NotionUploadMedia implements INodeType {
 		group: ['transform'],
 		version: 2,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: `Upload media files to Notion blocks (v${version})`,
+		description: `Upload media files to Notion blocks (v${VERSION})`,
 		defaults: {
 			name: 'Notion Upload Media',
 		},
@@ -148,7 +148,7 @@ export class NotionUploadMedia implements INodeType {
 				],
 			},
 			{
-				displayName: `Package Version: ${version}`,
+				displayName: `Package Version: ${VERSION}`,
 				name: 'version',
 				type: 'notice',
 				default: '',

@@ -53,4 +53,5 @@ echo "To manually clean up temporary files, run:"
 echo "  rm -rf $(pwd)/tmp/workflows/*/executions/*/binary_data/*"
 echo ""
 
-npx n8n start 2>&1 | tee n8n.log
+# Use the nvm-installed n8n (v2.x)
+~/.nvm/versions/node/v22.19.0/bin/n8n start 2>&1 | tee n8n.log
