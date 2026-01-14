@@ -87,5 +87,5 @@
     "test:coverage": "vitest run --coverage",
     "test:n8n": "./start-n8n.sh"
   },
-  "version": "2.0.3"
+  "version": "2.0.4"
 }
