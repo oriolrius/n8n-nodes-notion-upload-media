@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2025-01-14
+
+### Fixed
+
+- **Critical**: Fixed community node not loading in n8n v2.3.4
+  - Excluded compiled `dist/package.json` from npm package (had incorrect paths)
+  - Updated `files` field to explicitly include only `dist/nodes` and `dist/credentials`
+- Excluded test files and development docs from npm package
+
 ## [2.0.0] - 2025-01-14
 
 ### Breaking Changes
