@@ -50,10 +50,11 @@
   ],
   "license": "MIT",
   "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
     "credentials": [
       "dist/credentials/NotionUploadMediaApi.credentials.js"
     ],
-    "n8nNodesApiVersion": 1,
     "nodes": [
       "dist/nodes/NotionUploadMedia/NotionUploadMedia.node.js",
       "dist/nodes/NotionListMedia/NotionListMedia.node.js"
@@ -86,5 +87,5 @@
     "test:coverage": "vitest run --coverage",
     "test:n8n": "./start-n8n.sh"
   },
-  "version": "2.0.1"
+  "version": "2.0.2"
 }
