@@ -37,10 +37,13 @@ jobs:
     
     - name: Run linter
       run: pnpm lint
-    
+
     - name: Build project
       run: pnpm build
-    
+
+    - name: Run tests
+      run: pnpm test
+
     - name: Check build output
       run: ls -la dist/
 

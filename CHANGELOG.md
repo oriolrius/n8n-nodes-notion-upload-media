@@ -5,6 +5,59 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-01-14
+
+### Breaking Changes
+
+- **n8n v2.0 Compatibility**: Updated to support n8n v2.x (requires n8n-workflow ^2.0.0)
+- Changed `NodeConnectionType.Main` to `NodeConnectionTypes.Main` (plural) per n8n v2 API
+- Removed direct n8n dependency from package (not needed for community nodes)
+- Minimum Node.js version recommended: 20.15+
+
+### Added
+
+- **NotionListMedia Node**: New node to list and retrieve media files from Notion pages and databases
+  - List media from pages with `loadPageChunk` API
+  - Query media from databases with `queryCollection` API
+  - Filter by media type (image, video, audio, file)
+  - Optional metadata extraction (captions, dimensions, timestamps)
+  - Optional file download capability
+- **Comprehensive Test Suite**: 55 unit tests using Vitest
+  - Tests for n8n v2 API compatibility
+  - Mock utilities for IExecuteFunctions
+  - Tests for node metadata, binary handling, error handling
+  - Credential validation tests
+- **CI Test Integration**: GitHub Actions now runs tests on every push/PR
+
+### Changed
+
+- Updated `n8n-workflow` dependency to `^2.0.0`
+- Updated `@types/node` to `^22.10.0`
+- Updated import style to use `import type` for type-only imports
+- Registered NotionListMedia node in package.json
+- Updated package description and keywords
+
+### Development
+
+- Added Vitest testing framework with coverage support
+- Added test scripts: `pnpm test`, `pnpm test:watch`, `pnpm test:coverage`
+- Created AGENTS.md documentation for AI agent assistance
+
+## [1.1.1] - 2025-01-13
+
+### Fixed
+
+- Fix CI workflow to support tags without 'v' prefix
+- Handle existing releases in release workflow
+
+## [1.1.0] - 2025-01-12
+
+### Added
+
+- Auto-cleanup for temporary binary data
+- Binary data TTL configuration (60 minutes default)
+- Execution data pruning settings
+
 ## [1.0.6] - 2025-06-25
 
 ### Added

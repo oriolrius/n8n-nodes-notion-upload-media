@@ -1,11 +1,10 @@
-import {
+import type {
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeOperationError,
-	NodeConnectionType,
 } from 'n8n-workflow';
+import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
 
 import FormData from 'form-data';
 import { request } from 'https';
@@ -24,8 +23,8 @@ export class NotionUploadMedia implements INodeType {
 		defaults: {
 			name: 'Notion Upload Media',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'notionUploadMediaApi',

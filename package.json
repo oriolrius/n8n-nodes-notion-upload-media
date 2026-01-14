@@ -7,20 +7,21 @@
     "url": "https://github.com/oriolrius/n8n-nodes-notion-upload-media/issues"
   },
   "dependencies": {
-    "form-data": "^4.0.0",
-    "n8n": "1.98.1"
+    "form-data": "^4.0.0"
   },
-  "description": "n8n node for uploading media files to Notion blocks",
+  "description": "n8n nodes for uploading and listing media files in Notion blocks",
   "devDependencies": {
-    "@types/node": "^20.14.8",
+    "@types/node": "^22.10.0",
     "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.35.0",
+    "@vitest/coverage-v8": "^2.1.0",
     "eslint": "^8.56.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.1",
     "gulp": "^4.0.2",
-    "n8n-workflow": "^1.56.0",
+    "n8n-workflow": "^2.0.0",
     "prettier": "^3.3.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.0"
   },
   "engines": {
     "node": "\u003e=18.10",
@@ -38,6 +39,7 @@
     "n8n",
     "notion",
     "upload",
+    "list",
     "media",
     "files",
     "images",
@@ -52,7 +54,8 @@
     ],
     "n8nNodesApiVersion": 1,
     "nodes": [
-      "dist/nodes/NotionUploadMedia/NotionUploadMedia.node.js"
+      "dist/nodes/NotionUploadMedia/NotionUploadMedia.node.js",
+      "dist/nodes/NotionListMedia/NotionListMedia.node.js"
     ]
   },
   "name": "n8n-nodes-notion-upload-media",
@@ -77,7 +80,10 @@
     "preinstall": "npx only-allow pnpm",
     "prepublishOnly": "pnpm build \u0026\u0026 pnpm lint -o .eslintcache",
     "start": "./start-n8n.sh",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "test:n8n": "./start-n8n.sh"
   },
-  "version": "1.1.1"
+  "version": "2.0.0"
 }
