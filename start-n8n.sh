@@ -6,8 +6,8 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 export N8N_SECURE_COOKIE=false
 export NODE_NO_WARNINGS=1
 
-# Load our custom configuration to bypass payload limits
-export NODE_OPTIONS="--require ./n8n-config.js"
+# Note: NODE_OPTIONS is applied inline to n8n only (not exported)
+# to avoid breaking npm child processes when installing community nodes
 
 # Set n8n configuration
 export N8N_CUSTOM_EXTENSIONS="$(pwd)"
@@ -54,4 +54,5 @@ echo "  rm -rf $(pwd)/tmp/workflows/*/executions/*/binary_data/*"
 echo ""
 
 # Use the nvm-installed n8n (v2.x)
-~/.nvm/versions/node/v22.19.0/bin/n8n start 2>&1 | tee n8n.log
+# NODE_OPTIONS is applied inline to avoid inheritance by npm child processes
+NODE_OPTIONS="--require $(pwd)/n8n-config.js" ~/.nvm/versions/node/v22.19.0/bin/n8n start 2>&1 | tee n8n.log
